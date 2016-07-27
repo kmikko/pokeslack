@@ -12,11 +12,13 @@ And use the web hook url as the SLACK_WEBHOOK_URL in your .env / Heroku config.
 Create an .env file at the project root with the following content filled out. Do not use your main PokemonGo account information. 
 
     AUTH_SERVICE=google/ptc
-    USERNAME=account@gmail.com
-    PASSWORD=password
+    AUTH_USER=username
+    AUTH_PASSWORD=password
     LOCATION_NAME=Some location, USA
     RARITY_LIMIT=3
     SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXX
+    SLACK_USERNAME=PokéAlert
+    STEP_LIMIT=4
 
 ### Pokemon Data
 This project contains a file `pokedata.csv` where you can customize the assigned rarity to each Pokemon. 
