@@ -45,6 +45,9 @@ if __name__ == '__main__':
     slack_username = str(os.environ.get('SLACK_USERNAME', env.get('SLACK_USERNAME')))
     step_limit = int(os.environ.get('STEP_LIMIT', env.get('STEP_LIMIT')))
 
+    logger.info('rarity limit: %s', rarity_limit)
+    logger.info('step limit: %s', step_limit)
+
     # const vars
     step_size = 0.0025
 
