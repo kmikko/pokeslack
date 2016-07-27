@@ -11,10 +11,11 @@ logger = logging.getLogger(__name__)
 EXPIRE_BUFFER_SECONDS = 30
 
 class Pokeslack:
-    def __init__(self, rarity_limit, slack_webhook_url):
+    def __init__(self, rarity_limit, slack_webhook_url, slack_username):
         self.sent_pokemon = {}
         self.rarity_limit = rarity_limit
         self.slack_webhook_url = slack_webhook_url
+        self.slack_username = slack_username
 
     def try_send_pokemon(self, pokemon, position, distance, debug):
         disappear_time = pokemon['disappear_time']
@@ -59,7 +60,7 @@ class Pokeslack:
 
     def _send(self, message):
         payload = {
-            'username': 'Poké Alert!',
+            'username': self.slack_username,
             'text': message,
             'icon_emoji': ':ghost:'
         }

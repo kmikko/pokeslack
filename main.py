@@ -42,6 +42,7 @@ if __name__ == '__main__':
     location_name = str(os.environ.get('LOCATION_NAME', env.get('LOCATION_NAME')))
     rarity_limit = int(os.environ.get('RARITY_LIMIT', env.get('RARITY_LIMIT')))
     slack_webhook_url = str(os.environ.get('SLACK_WEBHOOK_URL', env.get('SLACK_WEBHOOK_URL')))
+    slack_username = str(os.environ.get('SLACK_USERNAME', env.get('SLACK_USERNAME')))
 
     # const vars
     step_size = 0.0025
@@ -57,7 +58,7 @@ if __name__ == '__main__':
 
     api = PGoApi()
     pokesearch = Pokesearch(api, auth_service, username, password, position)
-    pokeslack = Pokeslack(rarity_limit, slack_webhook_url)
+    pokeslack = Pokeslack(rarity_limit, slack_webhook_url, slack_username)
 
     if not use_cache or not os.path.exists(cached_filename):
         logger.info('searching starting at latlng: (%s, %s)', position[0], position[1])
