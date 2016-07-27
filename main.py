@@ -13,6 +13,12 @@ from pokesearch import Pokesearch
 from pokeslack import Pokeslack
 from pokeutil import get_pos_by_name
 
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
@@ -31,8 +37,8 @@ if __name__ == '__main__':
                 env[parts[0].strip()] = parts[1].strip()
 
     auth_service = str(os.environ.get('AUTH_SERVICE', env.get('AUTH_SERVICE')))
-    username = str(os.environ.get('USERNAME', env.get('USERNAME')))
-    password = str(os.environ.get('PASSWORD', env.get('PASSWORD')))
+    username = str(os.environ.get('AUTH_USER', env.get('AUTH_USER')))
+    password = str(os.environ.get('AUTH_PASSWORD', env.get('AUTH_PASSWORD')))
     location_name = str(os.environ.get('LOCATION_NAME', env.get('LOCATION_NAME')))
     rarity_limit = int(os.environ.get('RARITY_LIMIT', env.get('RARITY_LIMIT')))
     slack_webhook_url = str(os.environ.get('SLACK_WEBHOOK_URL', env.get('SLACK_WEBHOOK_URL')))
@@ -60,9 +66,9 @@ if __name__ == '__main__':
             pokemons = []
             for pokemon in pokesearch.search(position[0], position[1], step_limit, step_size):
                 pokemon_position = (pokemon['latitude'], pokemon['longitude'], 0)
-                distance = vincenty(position, pokemon_position).miles
+                distance = vincenty(position, pokemon_position).meters
                 expires_in = pokemon['disappear_time'] - datetime.utcnow()
-                logger.info("adding pokemon: %s - %s, rarity: %s, expires in: %s, distance: %s miles", pokemon['pokemon_id'], pokemon['name'], pokemon['rarity'], expires_in, distance)
+                logger.info("adding pokemon: %s - %s, rarity: %s, expires in: %s, distance: %s meters", pokemon['pokemon_id'], pokemon['name'], pokemon['rarity'], expires_in, distance)
                 pokeslack.try_send_pokemon(pokemon, position, distance, debug=False)
                 pokemons.append(pokemon)
             with open(cached_filename, 'w') as fp:
@@ -74,6 +80,6 @@ if __name__ == '__main__':
             pokemons = json.load(fp, object_hook=json_deserializer)
             for pokemon in pokemons:
                 pokemon_position = (pokemon['latitude'], pokemon['longitude'], 0)
-                distance = vincenty(position, pokemon_position).miles
+                distance = vincenty(position, pokemon_position).meters
                 pokeslack.try_send_pokemon(pokemon, position, distance, debug=True)
         logger.info('loaded cached pokemon data for %s pokemon', len(pokemons))

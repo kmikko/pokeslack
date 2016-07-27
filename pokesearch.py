@@ -23,6 +23,7 @@ class Pokesearch:
         self.position = position
 
     def login(self):
+        print self.username
         logger.info('login start with service: %s', self.auth_service)
 
         self.api.set_position(*self.position)
