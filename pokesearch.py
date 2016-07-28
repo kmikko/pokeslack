@@ -28,9 +28,15 @@ class Pokesearch:
 
         self.api.set_position(*self.position)
 
-        while not self.api.login(self.auth_service, self.username, self.password):
-            logger.warn('failed to login to pokemon go, retrying...')
-            time.sleep(REQ_SLEEP)
+        while True:
+            try:
+                if self.api.login(self.auth_service, self.username, self.password):
+                    break
+                logger.warn('failed to login to pokemon go, retrying...')
+                time.sleep(REQ_SLEEP)
+            except:
+                logger.warn('problems with auth service, retrying...')
+                time.sleep(REQ_SLEEP * 60)
 
         logger.info('login successful')
 
