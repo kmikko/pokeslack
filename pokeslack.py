@@ -59,7 +59,7 @@ class Pokeslack:
         payload = {
             'username': self.slack_username,
             'text': message,
-            'icon_emoji': ':ghost:'
+            'icon_url': 'http://oi64.tinypic.com/r8ch2g.jpg'
         }
         s = json.dumps(payload)
         r = requests.post(self.slack_webhook_url, data=s)
