@@ -94,7 +94,7 @@ class Pokesearch:
 
             logger.info('Completed {:5.2f}% of scan.'.format(float(i) / step_limit**2*100))
             i += 1
-            time.sleep(REQ_SLEEP)
+            time.sleep(5)
 
 def generate_location_steps(starting_lat, startin_lng, step_size, step_limit):
     pos, x, y, dx, dy = 1, 0, 0, 0, -1
